@@ -1,0 +1,1684 @@
+---
+alwaysApply: true
+---
+
+# Cursor Rules for Laravel Frontend Project
+
+## Project Overview
+
+This is a Laravel 11 project with a custom frontend build system using Vite. The project includes:
+
+-   Laravel backend with PHP 8.2+
+-   Custom Vite configuration for frontend assets
+-   jQuery-based frontend with modern CSS/JS tooling
+-   RTL support via postcss-rtlcss
+-   Custom asset compilation pipeline
+
+## Development Guidelines
+
+### PHP/Laravel
+
+-   Use PHP 8.2+ features and modern Laravel 12 conventions
+-   Follow PSR-12 coding standards
+-   Implement proper dependency injection and service patterns
+-   Use Laravel built-in validation and authorization
+-   Follow Laravel naming conventions for routes, controllers, and models
+
+### Frontend Development
+
+-   **CSS**: Use modern CSS with PostCSS processing
+-   **JavaScript**: jQuery-based with modern ES6+ features where appropriate
+-   **Assets**: All frontend assets go in `resources/assets/`
+-   **Build**: Use Vite for asset compilation and bundling
+-   **RTL Support**: Built-in RTL support via postcss-rtlcss plugin
+
+#### HTML Structure & Classes
+
+-   **Semantic HTML**: Use proper HTML5 semantic tags (`<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`)
+-   **BEM Methodology**: Follow Block\_\_Element--Modifier naming convention for CSS classes
+-   **Component Classes**: Use descriptive, reusable class names (e.g., `.card`, `.card__title`, `.card--featured`)
+-   **Utility Classes**: Create utility classes for common patterns (e.g., `.text-center`, `.mb-20`, `.d-flex`)
+-   **State Classes**: Use state-based classes (e.g., `.is-active`, `.has-error`, `.is-loading`)
+-   **Grid Structure**: Always use the existing grid system from `shared/grids.css`:
+    -   **Container**: `<div class="container">` or `<div class="container-fluid">`
+    -   **Row**: `<div class="row">` (with optional modifiers like `.double`, `.no-gutter`)
+    -   **Columns**: `<div class="col-12 col-md-6 col-lg-4">` (responsive breakpoints)
+
+#### CSS Organization & Structure
+
+```
+resources/assets/css/
+├── shared/           # Global styles and utilities (always present)
+│   ├── base.css     # Reset, typography, base elements
+│   ├── vars.css     # CSS custom properties (CSS variables)
+│   ├── buttons.css  # Button styles and variants
+│   ├── contact-list.css # Contact information styling
+│   ├── footer.css   # Footer component styles
+│   ├── grids.css    # Grid system and layouts
+│   ├── header.css   # Header and navigation styles
+│   ├── main-classes.css # Common utility classes
+│   ├── magnific-popup.css # Modal/popup styles
+│   ├── social-list.css # Social media links
+│   └── swiper.css   # Slider/carousel styles
+├── home.css         # Homepage-specific styles
+├── inner.css        # Inner page styles
+├── inner/           # Inner page component styles
+│   ├── breadcrumb.css # Breadcrumb navigation
+│   ├── form.css     # Form styling
+│   ├── gallery.css  # Gallery layouts
+│   ├── inner-page.css # Inner page specific styles
+│   └── pagination.css # Pagination component
+└── items/           # Feature-specific component styles (new components)
+    └── section.css  # Generic section styles
+```
+
+#### CSS Organization Principles
+
+-   **shared/**: Contains global styles that are always loaded and used across all pages
+-   **home.css & inner.css**: Main page-specific styles that import shared styles and page-specific components
+-   **inner/**: Contains styles for inner page components (breadcrumbs, forms, galleries, pagination)
+-   **items/**: Contains styles for new feature components, each component gets its own CSS file
+-   **Component Separation**: Each component style is separated into its own file for maintainability
+-   **Import Strategy**:
+    -   **home.css**: Imports shared styles and homepage-specific component styles
+    -   **inner.css**: Imports shared styles, inner page components, and feature components for inner pages
+    -   **Component styles**: Never create standalone CSS files in the root css folder
+    -   **Always import**: Component styles through the main CSS files (home.css or inner.css)
+
+#### Grid System Usage
+
+-   **Use Existing Grid**: Always use the grid system defined in `shared/grids.css`
+-   **Available Classes**:
+    -   **Containers**: `.container`, `.container-fluid`
+    -   **Rows**: `.row`, `.row-5`, `.row-10`, `.row-20`, `.no-gutter`, `.no-padding`
+    -   **Columns**: `.col-1` through `.col-12`, `.col-custom-5` (20%), `.col-custom-40` (40%)
+    -   **Responsive**: `sm` (576px+), `md` (768px+), `lg` (992px+), `xl` (1200px+)
+
+#### CSS File Organization Rules
+
+**📋 CSS Import Rules:**
+
+1. **Component styles** go in `items/` folder
+2. **Main CSS files** (home.css, inner.css) import what they need
+3. **Vite config** only includes main CSS files, not component files
+4. **Component CSS** is automatically included through main CSS imports
+5. **Grid system** is provided by `shared/grids.css` - never create custom grids
+
+#### Form Field Classes - REUSE EXISTING CLASSES
+
+**⚠️ IMPORTANT: Always reuse existing form.css classes for form fields**
+
+The project has a comprehensive set of form classes in `modules/Frontend/resources/assets/css/inner/form.css` that must be reused for all form fields:
+
+**✅ REQUIRED Form Classes to Use:**
+
+-   **Form Structure**: `.form-group` for form field containers
+-   **Input Fields**: `.form-control` for all input types (text, email, password, etc.)
+-   **Labels**: `.form-label` for field labels
+-   **Select Fields**: `.form-control` + `.select-w` wrapper for dropdowns
+-   **Textareas**: `.form-control` (automatically styled for textarea)
+-   **Checkboxes**: `.checkbox` or `.checkbox-2` for different checkbox styles
+-   **Error States**: `.error` class for validation errors
+-   **Small Inputs**: `.form-control.small` for compact inputs
+
+**✅ CORRECT Form Implementation:**
+
+```html
+<div class="form-group">
+    <label class="form-label">Field Label</label>
+    <input type="text" class="form-control" name="field_name" />
+</div>
+
+<div class="form-group">
+    <label class="form-label">Select Field</label>
+    <div class="select-w">
+        <select class="form-control" name="select_field">
+            <option>Option 1</option>
+        </select>
+    </div>
+</div>
+```
+
+**❌ INCORRECT Form Implementation:**
+
+```html
+<!-- Don't create custom classes for form fields -->
+<div class="custom-field">
+    <label class="custom-label">Field Label</label>
+    <input type="text" class="custom-input" name="field_name" />
+</div>
+```
+
+**Available Form Classes:**
+
+-   `.form-group` - Form field container
+-   `.form-control` - All input types (text, email, password, select, textarea)
+-   `.form-label` - Field labels
+-   `.select-w` - Select field wrapper with custom arrow
+-   `.checkbox` - Standard checkbox style
+-   `.checkbox-2` - Enhanced checkbox style for options
+-   `.error` - Error state styling
+-   `.small` - Compact input size modifier
+-   `.invalid-feedback` - Error message display
+-   `.form-group-w.flex-row` - Horizontal form layout
+-   `.file-upload` - File upload styling
+-   `.side-search-form` - Search form styling
+
+#### Reuse Main CSS Classes - AVOID UNUSED CLASSES
+
+**⚠️ IMPORTANT: Always reuse existing classes from main CSS files when applicable**
+
+The project has comprehensive utility classes in shared CSS files that must be reused instead of creating custom classes:
+
+**✅ REQUIRED: Reuse Classes From These Files:**
+
+**1. `shared/main-classes.css` - Utility Classes:**
+
+-   **Layout**: `.d-flex`, `.d-block`, `.d-none`, `.flex-column`, `.flex-row`
+-   **Alignment**: `.justify-content-center`, `.justify-content-between`, `.align-items-center`
+-   **Spacing**: `.mt-20`, `.mb-40`, `.p-0`, `.gap`, `.gap-small`
+-   **Text**: `.text-center`, `.text-right`, `.uppercase`, `.text-underline`
+-   **Backgrounds**: `.bg-primary`, `.bg-secondary`, `.bg-light-gray`
+-   **Lists**: `.list-plain`, `.check-list`, `.bullet-list`
+-   **Components**: `.box`, `.alert`, `.collapse`, `.hr`
+
+**2. `shared/buttons.css` - Button Classes:**
+
+-   **Button Types**: `.btn`, `.btn2`, `.btn-primary`, `.btn-secondary`, `.btn-danger`
+-   **Button Sizes**: `.btn-full` (full width)
+-   **Button States**: `:disabled`, `:hover` effects
+-   **Icon Buttons**: `.btn-icon`
+
+**3. `shared/grids.css` - Grid System:**
+
+-   **Containers**: `.container`, `.container-fluid`
+-   **Rows**: `.row`, `.row-5`, `.row-10`, `.row-20`, `.no-gutter`, `.no-padding`
+-   **Columns**: `.col-1` through `.col-12`, `.col-custom-5` (20%), responsive variants
+-   **Responsive**: `sm`, `md`, `lg`, `xl` breakpoints
+
+**4. `shared/base.css` - Base Elements:**
+
+-   **Base Styles**: Global reset, typography, form elements
+-   **Lazy Loading**: `.lazyloaded`, `.lazy-resized`
+-   **Loading States**: `.loading`, `.block-with-carousel.loading`
+
+**✅ CORRECT Class Usage:**
+
+```html
+<!-- Use existing utility classes -->
+<div class="d-flex justify-content-between align-items-center mb-20">
+    <h2 class="text-center">Title</h2>
+    <button class="btn btn-primary">Action</button>
+</div>
+
+<!-- Use existing grid classes -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-lg-4">Content</div>
+    </div>
+</div>
+
+<!-- Use existing component classes -->
+<div class="box box-small">
+    <div class="alert alert-success">Message</div>
+</div>
+```
+
+**❌ INCORRECT Class Usage:**
+
+```html
+<!-- Don't create custom classes when existing ones exist -->
+<div class="custom-flex custom-justify custom-align custom-margin">
+    <h2 class="custom-text-center">Title</h2>
+    <button class="custom-button">Action</button>
+</div>
+
+<!-- Don't create custom grid classes -->
+<div class="custom-container">
+    <div class="custom-row">
+        <div class="custom-column">Content</div>
+    </div>
+</div>
+```
+
+**⚠️ CRITICAL RULES:**
+
+1. **NEVER create custom classes** for functionality that exists in main CSS files
+2. **ALWAYS check main CSS files first** before creating new classes
+3. **ONLY create component-specific classes** that don't exist elsewhere
+4. **USE utility classes** for layout, spacing, alignment, and common patterns
+5. **AVOID unused classes** - every class must be actively used in CSS or jQuery
+
+**Class Usage Verification:**
+
+-   **CSS**: Every class must have styles defined and be used
+-   **jQuery**: Every class used in JavaScript must exist in CSS
+-   **HTML**: Every class must serve a purpose (styling or JavaScript targeting)
+-   **No Orphaned Classes**: Remove classes that are no longer used
+
+#### Icon Usage Rules
+
+**⚠️ IMPORTANT: Always use icons from the icomoon font library**
+
+The project uses a comprehensive icon font system located in `modules/Frontend/resources/assets/fonts/icomoon/style.css`. All icons must come from this file:
+
+**✅ REQUIRED: Icon Implementation:**
+
+1. **Icon Font Source**: `modules/Frontend/resources/assets/fonts/icomoon/style.css`
+2. **Icon Classes**: Use `icon-{name}` format (e.g., `icon-search`, `icon-calendar`, `icon-eye`)
+3. **Font Family**: Icons automatically use `icomoon` font family
+4. **Icon Elements**: Always use `<i>` tags for icons
+
+**✅ CORRECT Icon Usage:**
+
+```html
+<!-- Use icomoon icons with proper classes -->
+<i class="icon-search"></i>
+<i class="icon-calendar"></i>
+<i class="icon-eye"></i>
+<i class="icon-refresh"></i>
+<i class="icon-spinner"></i>
+
+<!-- Icons in buttons -->
+<button class="btn btn-primary">
+    <i class="icon-search"></i>
+    Search
+</button>
+
+<!-- Icons in links -->
+<a href="#" class="btn btn-secondary">
+    <i class="icon-refresh"></i>
+    Refresh
+</a>
+```
+
+**❌ INCORRECT Icon Usage:**
+
+```html
+<!-- Don't use custom icon classes -->
+<i class="custom-search-icon"></i>
+<i class="search-icon"></i>
+
+<!-- Don't use other icon libraries -->
+<i class="fas fa-search"></i>
+<i class="material-icons">search</i>
+
+<!-- Don't use SVG icons directly -->
+<svg class="icon">...</svg>
+```
+
+**Available Icon Categories:**
+
+**Common UI Icons:**
+
+-   **Actions**: `icon-search`, `icon-refresh`, `icon-close`, `icon-edit`, `icon-delete`
+-   **Navigation**: `icon-arrow-left`, `icon-arrow-right`, `icon-arrow-up`, `icon-arrow-down`
+-   **Status**: `icon-checkmark`, `icon-cross`, `icon-warning`, `icon-info`
+-   **User**: `icon-user`, `icon-profile`, `icon-login`, `icon-logout`
+-   **Content**: `icon-calendar`, `icon-clock`, `icon-location`, `icon-phone`
+
+**E-commerce Icons:**
+
+-   **Shopping**: `icon-cart`, `icon-shop`, `icon-heart`, `icon-wishlist`
+-   **Payment**: `icon-credit-card`, `icon-paypal`, `icon-coin-dollar`
+-   **Shipping**: `icon-truck`, `icon-box`, `icon-package`
+
+**Social Media Icons:**
+
+-   **Platforms**: `icon-facebook`, `icon-twitter`, `icon-instagram`, `icon-linkedin`
+-   **Communication**: `icon-whatsapp`, `icon-telegram`, `icon-email`
+
+**⚠️ CRITICAL RULES:**
+
+1. **NEVER create custom icon classes** - all icons must use `icon-{name}` format
+2. **ALWAYS check `style.css` first** before using any icon
+3. **ONLY use icomoon icons** - no external icon libraries or custom SVGs
+4. **USE consistent icon naming** - follow the established `icon-{name}` pattern
+5. **MAINTAIN icon consistency** - use the same icon for the same action across the app
+
+**Icon Implementation Best Practices:**
+
+-   **Semantic Usage**: Use icons that clearly represent their function
+-   **Accessibility**: Icons should complement text, not replace it
+-   **Consistency**: Use the same icon for the same action throughout the application
+-   **Performance**: Icon fonts are lightweight and scalable
+-   **Maintenance**: All icons are centralized in one font file
+
+**Icon Font Benefits:**
+
+-   **Scalable**: Icons scale perfectly at any size
+-   **Lightweight**: Single font file contains all icons
+-   **Consistent**: Uniform styling and alignment
+-   **Accessible**: Screen reader friendly
+-   **Maintainable**: Centralized icon management
+
+#### Grid System Usage Rules
+
+**⚠️ IMPORTANT: Always use grid classes from grids.css instead of custom layout classes**
+
+The project has a comprehensive grid system in `modules/Frontend/resources/assets/css/shared/grids.css` that must be used for all layout structures:
+
+**✅ REQUIRED: Grid System Implementation:**
+
+1. **Grid Source**: `modules/Frontend/resources/assets/css/shared/grids.css`
+2. **Container Classes**: Use `.container` or `.container-fluid` for page wrappers
+3. **Row Classes**: Use `.row` with gutter variants (`.row-5`, `.row-10`, `.row-20`)
+4. **Column Classes**: Use responsive column classes (`.col-md-6`, `.col-lg-4`, etc.)
+5. **Utility Classes**: Use `.no-gutter`, `.no-padding` for special cases
+
+**✅ CORRECT Grid Usage:**
+
+```html
+<!-- Use existing grid classes -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-lg-4">Content</div>
+        <div class="col-md-6 col-lg-4">Content</div>
+        <div class="col-md-12 col-lg-4">Content</div>
+    </div>
+</div>
+
+<!-- Use gutter variants -->
+<div class="row row-10">
+    <div class="col-6">Tight spacing</div>
+    <div class="col-6">Tight spacing</div>
+</div>
+
+<!-- Use utility classes -->
+<div class="row no-gutter">
+    <div class="col-6">No gutters</div>
+    <div class="col-6">No gutters</div>
+</div>
+```
+
+**❌ INCORRECT Grid Usage:**
+
+```html
+<!-- Don't create custom grid classes -->
+<div class="custom-container">
+    <div class="custom-row">
+        <div class="custom-column">Content</div>
+    </div>
+</div>
+
+<!-- Don't use inline styles for layout -->
+<div style="display: grid; grid-template-columns: 1fr 1fr;">
+    <div>Content</div>
+</div>
+```
+
+**Available Grid Classes:**
+
+**Containers:**
+
+-   `.container` - Fixed width container with responsive breakpoints
+-   `.container-fluid` - Full width container with padding
+
+**Rows:**
+
+-   `.row` - Standard row with default gutters
+-   `.row-5` - Row with 5px gutters
+-   `.row-10` - Row with 10px gutters
+-   `.row-20` - Row with 20px gutters
+-   `.no-gutter` - Row without gutters
+-   `.no-padding` - Row without bottom padding
+
+**Columns:**
+
+-   **Base**: `.col-1` through `.col-12` (8.33% to 100%)
+-   **Custom**: `.col-custom-5` (20% width)
+-   **Responsive**: `.col-sm-*`, `.col-md-*`, `.col-lg-*`, `.col-xl-*`
+-   **Auto**: `.col-auto` (auto-sizing)
+
+**⚠️ CRITICAL GRID RULES:**
+
+1. **NEVER create custom grid classes** - all layout must use existing grid system
+2. **ALWAYS check grids.css first** before creating layout classes
+3. **ONLY use responsive column classes** for different screen sizes
+4. **USE appropriate gutter variants** for different spacing needs
+5. **MAINTAIN grid consistency** across all pages and components
+
+#### Icon Verification Requirements
+
+**⚠️ IMPORTANT: Always verify icons exist in style.css before using them**
+
+Before using any icon class, developers must verify it exists in the icomoon font library:
+
+**✅ REQUIRED: Icon Verification Process:**
+
+1. **Check style.css**: Search for `.icon-{name}:before` in `modules/Frontend/resources/assets/fonts/icomoon/style.css`
+2. **Verify existence**: Ensure the icon class is defined with proper content
+3. **Use only verified icons**: Never use icon classes that don't exist in the file
+4. **Report missing icons**: If an icon is needed but doesn't exist, request it to be added
+
+**✅ CORRECT Icon Verification:**
+
+```css
+/* In style.css - VERIFIED ICONS */
+.icon-search:before {
+    content: "\e905";
+}
+.icon-calendar:before {
+    content: "\e901";
+}
+.icon-eye:before {
+    content: "\e9fe";
+}
+```
+
+**❌ INCORRECT Icon Usage:**
+
+```html
+<!-- Don't use unverified icon classes -->
+<i class="icon-non-existent"></i>
+<i class="icon-custom-icon"></i>
+<i class="icon-unknown"></i>
+```
+
+**Icon Verification Checklist:**
+
+-   [ ] **Search style.css**: Look for `.icon-{name}:before` declaration
+-   [ ] **Check content property**: Ensure icon has valid Unicode content
+-   [ ] **Verify font-family**: Confirm icon uses `icomoon` font
+-   [ ] **Test rendering**: Verify icon displays correctly in browser
+-   [ ] **Document usage**: Use only verified icons in production code
+
+**Common Verified Icons (Always Available):**
+
+-   `icon-search` ✅ - Search functionality
+-   `icon-calendar` ✅ - Date/time functionality
+-   `icon-eye` ✅ - View/visibility functionality
+-   `icon-arrow-left` ✅ - Navigation left
+-   `icon-arrow-right` ✅ - Navigation right
+-   `icon-user` ✅ - User/profile functionality
+-   `icon-cart` ✅ - Shopping cart functionality
+-   `icon-heart` ✅ - Favorites/wishlist functionality
+
+**⚠️ ICON VERIFICATION CRITICAL RULES:**
+
+1. **ALWAYS verify icon exists** in style.css before using
+2. **NEVER assume icon exists** - check the file first
+3. **USE only verified icons** - no unverified icon classes
+4. **REPORT missing icons** - don't create workarounds
+5. **MAINTAIN icon integrity** - ensure all used icons are documented
+
+#### Adding New Pages - Correct Process
+
+**For Inner Pages (like About, Services, Contact):**
+
+1. **Create Template**: `resources/views/templates/inner/page_name.blade.php`
+2. **Use Existing Page View**: `resources/views/pages.blade.php` (dynamically includes templates)
+3. **Set Asset**: `@section('asset_name', 'inner')` (uses inner.css)
+4. **Create Component CSS**: `resources/assets/css/items/page_name.css`
+5. **Import in inner.css**: Add `@import "./items/page_name.css";`
+6. **Add JavaScript**: `resources/assets/js/page_name.js` (add to Vite config)
+7. **Add Route**: `Route::get('/page-name', function () { return view('pages'); })`
+
+**For Homepage Sections:**
+
+1. **Create Template**: `resources/views/templates/homepage/section_name.blade.php`
+2. **Create Component CSS**: `resources/assets/css/items/section_name.css`
+3. **Import in home.css**: Add `@import "./items/section_name.css";`
+
+**Key Rules:**
+
+-   **Never create standalone CSS files** in the root css folder
+-   **Always import component styles** through main CSS files
+-   **Use 'inner' asset** for inner pages, 'home' for homepage
+-   **Component CSS goes in items/**, imported through main CSS
+
+#### Template Organization
+
+**Dynamic Template System:**
+
+The project uses a dynamic template inclusion system where:
+
+-   **`pages.blade.php`** serves as the main view for inner pages
+-   **Templates** are stored in `resources/views/templates/inner/`
+-   **Route parameters** determine which template to include
+-   **No need** to create individual page views for each inner page
+
+**✅ CORRECT Template Structure:**
+
+```
+resources/views/
+├── layouts/
+│   └── app.blade.php          # Main layout
+├── templates/
+│   ├── components/            # Reusable components
+│   │   ├── section_head.blade.php
+│   │   └── news.blade.php
+│   ├── homepage/              # Homepage-specific templates
+│   │   ├── main_slider.blade.php
+│   │   ├── about.blade.php
+│   │   └── news.blade.php
+│   └── inner/                 # Inner page templates
+│       ├── page_name.blade.php # Page component template
+│       ├── news.blade.php     # News component template
+│       └── statements.blade.php
+├── home.blade.php             # Homepage (includes homepage templates)
+└── pages.blade.php            # Dynamic page view (includes templates based on route parameter)
+```
+
+**📋 Template Rules:**
+
+1. **Component templates** go in `templates/components/` (reusable across pages)
+2. **Homepage templates** go in `templates/homepage/` (homepage-specific sections)
+3. **Inner page templates** go in `templates/inner/` (inner page content)
+4. **Page views** use `pages.blade.php` for dynamic template inclusion
+5. **Templates** contain the actual content and markup
+6. **Route parameters** determine which template to include dynamically
+
+### Translation System
+
+**⚠️ IMPORTANT: Frontend Translation Rules**
+
+-   **Use `__('theme.key')` format**: Always use `__('theme.key')` for frontend translations
+-   **Dynamic keys**: Keys can be dynamic using concatenation: `__('theme.' . $status)`
+-   **No DBTrans**: Do not use `DBTrans()` or `trans_cms()` for frontend content
+-   **Theme namespace**: All frontend translations use the `theme` namespace
+-   **Translation files**: Frontend translations go in theme language files, not plugin files
+
+**✅ CORRECT Translation Usage:**
+
+```php
+{{ __('theme.filter_orders') }}
+{{ __('theme.' . $order->status) }}
+{{ __('theme.total_orders') }}
+```
+
+**❌ INCORRECT Translation Usage:**
+
+```php
+{{ DBTrans('ecom.filter_orders') }}
+{{ trans_cms('ecom.filter_orders') }}
+{{ trans('ecom.filter_orders') }}
+```
+
+### JavaScript Development Rules
+
+**⚠️ IMPORTANT: JavaScript Implementation Rules**
+
+-   **jQuery Only**: Always use jQuery for JavaScript functionality
+-   **No Vanilla JS**: Do not use vanilla JavaScript or modern ES6+ features
+-   **File Organization**: All JavaScript goes in dedicated JS files, never inline in Blade templates
+-   **Inner.js Integration**: Page-specific functionality should be added to `inner.js` for inner pages
+-   **Event Handling**: Use jQuery event handlers and selectors
+
+**✅ CORRECT JavaScript Implementation:**
+
+```javascript
+// In inner.js or dedicated JS file
+$(document).ready(function () {
+    $(".orders-filter__input--start-date").on("change", function () {
+        // jQuery functionality
+    });
+});
+```
+
+**❌ INCORRECT JavaScript Implementation:**
+
+```php
+{{-- In Blade template --}}
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Vanilla JS - NOT ALLOWED
+    });
+</script>
+@endsection
+```
+
+**JavaScript File Organization:**
+
+```
+modules/Frontend/resources/assets/js/
+├── jquery.js        # Main jQuery library
+├── shared.js        # Common functions and utilities
+├── home.js          # Homepage-specific JavaScript
+├── inner.js         # Inner page JavaScript (includes orders functionality)
+└── plugins/         # jQuery plugins and extensions
+```
+
+### CSS Custom Properties & Design System
+
+-   **CSS Custom Properties**: Define design tokens in `shared/vars.css`
+-   **Color Palette**: Use semantic color names (e.g., `--primary-color`, `--secondary-color`, `--success-color`)
+-   **Typography Scale**: Define font sizes and line heights (e.g., `--font-size-base`, `--line-height-base`)
+-   **Spacing System**: Use consistent spacing values (e.g., `--spacing-xs`, `--spacing-sm`, `--spacing-lg`)
+-   **Shadows & Effects**: Standardize shadows and transitions (e.g., `--shadow-sm`, `--transition-base`)
+
+#### jQuery File Organization
+
+```
+resources/assets/js/
+├── jquery.js        # Main jQuery library
+├── shared.js        # Common functions and utilities
+├── home.js          # Homepage-specific JavaScript
+├── inner.js         # Inner page JavaScript
+└── plugins/         # jQuery plugins and extensions
+    ├── contact.js   # Contact form functionality
+    ├── slider.js    # Slider/carousel functionality
+    ├── validation.js # Form validation
+    └── ...
+```
+
+#### jQuery Usage Guidelines
+
+-   **Document Ready**: Always wrap jQuery code in `$(document).ready()` or `$(function() {})`
+-   **Event Delegation**: Use event delegation for dynamic content (e.g., `$(document).on('click', '.dynamic-element')`)
+-   **Plugin Pattern**: Create reusable jQuery plugins for complex functionality
+-   **Performance**: Cache jQuery selectors and avoid DOM queries in loops
+-   **Modern Features**: Use ES6+ features where appropriate, jQuery for DOM manipulation
+-   **Error Handling**: Implement proper error handling for AJAX calls and user interactions
+
+#### Lazy Loading Implementation
+
+The project uses **lazysizes** library for efficient image lazy loading with the following setup:
+
+##### **Library Integration**
+
+-   **Package**: `lazysizes` v5.3.2 installed via npm
+-   **Import**: Automatically imported in `shared.js` and `inner.js` for global availability
+-   **Configuration**: Uses default lazysizes configuration with custom CSS classes
+
+##### **CSS Classes & States**
+
+```css
+/* Loading state - shows loader gif */
+.lazyload,
+.lazyloading {
+    background-color: transparent;
+    background-image: url(loader.gif);
+    background-size: 64px 64px !important;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Loaded state - removes loader, shows actual image */
+.lazyloaded {
+    height: auto;
+    width: auto;
+}
+```
+
+##### **PHP Helper Functions**
+
+Two main helper functions for generating lazy-loaded images:
+
+1. **`lazyloadImageResize($path, $width, $height, $attrs, $disabled = false)`**
+
+    - Generates resized images with lazy loading
+    - Automatically adds `lazyload` class
+    - Uses `data-src` attribute for actual image URL
+    - Sets placeholder as transparent 1x1 GIF
+
+2. **`lazyloadImage($path, $width, $height, $disabled = false, $title = "")`**
+    - Generates standard images with lazy loading
+    - Automatically extracts alt text from image metadata
+    - Same lazy loading behavior as resize function
+
+##### **HTML Implementation**
+
+```php
+{{-- Using helper functions --}}
+{!! lazyloadImageResize($item->getThumbnail('650x400'), 397, 297, $attr) !!}
+{!! lazyloadImage($imagePath, 300, 200) !!}
+
+{{-- Manual implementation --}}
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+     data-src="{{ $imageUrl }}"
+     width="300" height="200"
+     alt="Description"
+     class="lazyload">
+```
+
+##### **Lazy Loading Best Practices**
+
+-   **Always use helper functions** instead of manual HTML for consistency
+-   **Set proper dimensions** (width/height) to prevent layout shifts
+-   **Provide meaningful alt text** for accessibility
+-   **Use appropriate image sizes** for different screen resolutions
+-   **Test loading states** to ensure smooth user experience
+-   **Monitor performance** using browser dev tools
+
+##### **Supported Image Types**
+
+-   **Storage images**: Automatically handled via `upload_url()` helper
+-   **External URLs**: Direct URL support for external images
+-   **Responsive images**: Support for different sizes via resize function
+-   **Background images**: CSS-based lazy loading for background images
+
+##### **Performance Benefits**
+
+-   **Reduced initial page load time** by deferring off-screen images
+-   **Bandwidth optimization** by loading images only when needed
+-   **Improved Core Web Vitals** (LCP, CLS) scores
+-   **Better mobile performance** on slower connections
+-   **SEO benefits** from faster page loading
+
+#### Vite Configuration Details
+
+The `vite.config.frontend.mjs` handles:
+
+-   **Entry Points**: Multiple CSS and JS entry points for different page types
+-   **Asset Copying**: Automatic copying of fonts and images to public directory
+-   **PostCSS Processing**: RTL support and CSS optimization
+-   **Build Output**: Organized output structure in `public/front/` directory
+
+#### Adding New Assets to Vite
+
+To add new CSS/JS files:
+
+1. **JavaScript Files**: Add to the `input` array in `vite.config.frontend.mjs`
+2. **CSS Component Files**: Place in `resources/assets/css/items/` and import through main CSS files
+3. **CSS Import Strategy**:
+    - **home.css**: Import homepage-specific component styles
+    - **inner.css**: Import inner page and feature component styles
+    - **Never create standalone CSS files** in the root css folder
+4. **Build Process**: Run `npm run build:frontend` to compile new assets
+5. **Include in Views**: Use `@vite()` directive with the main CSS file (home.css or inner.css)
+
+### File Organization
+
+-   **Controllers**: `app/Http/Controllers/` - Keep controllers thin, move business logic to services
+-   **Models**: `app/Models/` - Use Eloquent relationships and scopes
+-   **Views**: `resources/views/` - Use Blade templates with proper componentization
+-   **Assets**: `resources/assets/` - Organized by type (css, js, images, fonts)
+-   **Helpers**: `Helpers/` - Custom PHP helper functions
+-   **Routes**: `routes/web.php` - Keep routes clean and organized
+
+### Asset Management
+
+-   **CSS**: Place in `resources/assets/css/` with subdirectories for organization
+-   **JavaScript**: Place in `resources/assets/js/` with plugins in subdirectories
+-   **Images**: Place in `resources/assets/images/` - will be copied to public during build
+-   **Fonts**: Place in `resources/assets/fonts/` - supports multiple formats (eot, svg, ttf, woff, woff2)
+
+### Build Process
+
+-   **Development**: `npm run dev` - starts Vite dev server
+-   **Frontend Build**: `npm run build:frontend` - builds frontend assets
+-   **Watch Mode**: `npm run watch:frontend` - watches for changes and rebuilds
+-   **Full Dev**: `composer run dev` - starts all services (server, queue, logs, vite)
+
+#### Asset Build Pipeline
+
+1. **CSS Processing**: PostCSS with RTL support, autoprefixer, and optimization
+2. **JavaScript Bundling**: ES6+ transpilation, jQuery compatibility, plugin bundling
+3. **Asset Optimization**: Image compression, font optimization, CSS/JS minification
+4. **Output Structure**: Organized assets in `public/front/` with hashed filenames
+5. **Development Server**: Hot module replacement for CSS and fast refresh for JS
+
+#### Asset Inclusion in Views
+
+```php
+{{-- In Blade templates --}}
+@vite(['resources/assets/css/home.css', 'resources/assets/js/home.js'])
+```
+
+## Common Commands
+
+```bash
+# Development
+composer run dev          # Start all development services
+npm run dev              # Start Vite dev server
+npm run build:frontend   # Build frontend assets
+npm run watch:frontend   # Watch and rebuild frontend
+```
+
+### Responsive Design Approach
+
+-   **Mobile First**: Start with mobile styles, then enhance for larger screens
+-   **Breakpoint Strategy**: Use consistent breakpoints defined in CSS variables
+-   **Flexible Grid**: Implement CSS Grid or Flexbox for responsive layouts
+-   **Touch Friendly**: Ensure touch targets are at least 44x44px on mobile
+-   **Performance**: Optimize images and assets for different screen sizes
+
+### Accessibility Guidelines
+
+-   **Semantic HTML**: Use proper heading hierarchy and semantic elements
+-   **ARIA Labels**: Add appropriate ARIA attributes for complex interactions
+-   **Keyboard Navigation**: Ensure all interactive elements are keyboard accessible
+-   **Color Contrast**: Maintain WCAG AA contrast ratios (4.5:1 for normal text)
+-   **Focus Management**: Provide visible focus indicators and logical tab order
+# Cursor Rules for Laravel Frontend Project
+
+## Project Overview
+
+This is a Laravel 12 project with a custom frontend build system using Vite. The project includes:
+
+-   Laravel backend with PHP 8.2+
+-   Custom Vite configuration for frontend assets
+-   jQuery-based frontend with modern CSS/JS tooling
+-   RTL support via postcss-rtlcss
+-   Custom asset compilation pipeline
+
+## Development Guidelines
+
+### PHP/Laravel
+
+-   Use PHP 8.2+ features and modern Laravel 12 conventions
+-   Follow PSR-12 coding standards
+-   Implement proper dependency injection and service patterns
+-   Use Laravel built-in validation and authorization
+-   Follow Laravel naming conventions for routes, controllers, and models
+
+### Frontend Development
+
+-   **CSS**: Use modern CSS with PostCSS processing
+-   **JavaScript**: jQuery-based with modern ES6+ features where appropriate
+-   **Assets**: All frontend assets go in `resources/assets/`
+-   **Build**: Use Vite for asset compilation and bundling
+-   **RTL Support**: Built-in RTL support via postcss-rtlcss plugin
+
+#### HTML Structure & Classes
+
+-   **Semantic HTML**: Use proper HTML5 semantic tags (`<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`)
+-   **BEM Methodology**: Follow Block\_\_Element--Modifier naming convention for CSS classes
+-   **Component Classes**: Use descriptive, reusable class names (e.g., `.card`, `.card__title`, `.card--featured`)
+-   **Utility Classes**: Create utility classes for common patterns (e.g., `.text-center`, `.mb-20`, `.d-flex`)
+-   **State Classes**: Use state-based classes (e.g., `.is-active`, `.has-error`, `.is-loading`)
+-   **Grid Structure**: Always use the existing grid system from `shared/grids.css`:
+    -   **Container**: `<div class="container">` or `<div class="container-fluid">`
+    -   **Row**: `<div class="row">` (with optional modifiers like `.double`, `.no-gutter`)
+    -   **Columns**: `<div class="col-12 col-md-6 col-lg-4">` (responsive breakpoints)
+
+#### CSS Organization & Structure
+
+```
+resources/assets/css/
+├── shared/           # Global styles and utilities (always present)
+│   ├── base.css     # Reset, typography, base elements
+│   ├── vars.css     # CSS custom properties (CSS variables)
+│   ├── buttons.css  # Button styles and variants
+│   ├── contact-list.css # Contact information styling
+│   ├── footer.css   # Footer component styles
+│   ├── grids.css    # Grid system and layouts
+│   ├── header.css   # Header and navigation styles
+│   ├── main-classes.css # Common utility classes
+│   ├── magnific-popup.css # Modal/popup styles
+│   ├── social-list.css # Social media links
+│   └── swiper.css   # Slider/carousel styles
+├── home.css         # Homepage-specific styles
+├── inner.css        # Inner page styles
+├── inner/           # Inner page component styles
+│   ├── breadcrumb.css # Breadcrumb navigation
+│   ├── form.css     # Form styling
+│   ├── gallery.css  # Gallery layouts
+│   ├── inner-page.css # Inner page specific styles
+│   └── pagination.css # Pagination component
+└── items/           # Feature-specific component styles (new components)
+    └── section.css  # Generic section styles
+```
+
+#### CSS Organization Principles
+
+-   **shared/**: Contains global styles that are always loaded and used across all pages
+-   **home.css & inner.css**: Main page-specific styles that import shared styles and page-specific components
+-   **inner/**: Contains styles for inner page components (breadcrumbs, forms, galleries, pagination)
+-   **items/**: Contains styles for new feature components, each component gets its own CSS file
+-   **Component Separation**: Each component style is separated into its own file for maintainability
+-   **Import Strategy**:
+    -   **home.css**: Imports shared styles and homepage-specific component styles
+    -   **inner.css**: Imports shared styles, inner page components, and feature components for inner pages
+    -   **Component styles**: Never create standalone CSS files in the root css folder
+    -   **Always import**: Component styles through the main CSS files (home.css or inner.css)
+
+#### Grid System Usage
+
+-   **Use Existing Grid**: Always use the grid system defined in `shared/grids.css`
+-   **Available Classes**:
+    -   **Containers**: `.container`, `.container-fluid`
+    -   **Rows**: `.row`, `.row-5`, `.row-10`, `.row-20`, `.no-gutter`, `.no-padding`
+    -   **Columns**: `.col-1` through `.col-12`, `.col-custom-5` (20%), `.col-custom-40` (40%)
+    -   **Responsive**: `sm` (576px+), `md` (768px+), `lg` (992px+), `xl` (1200px+)
+
+#### CSS File Organization Rules
+
+**📋 CSS Import Rules:**
+
+1. **Component styles** go in `items/` folder
+2. **Main CSS files** (home.css, inner.css) import what they need
+3. **Vite config** only includes main CSS files, not component files
+4. **Component CSS** is automatically included through main CSS imports
+5. **Grid system** is provided by `shared/grids.css` - never create custom grids
+
+#### Form Field Classes - REUSE EXISTING CLASSES
+
+**⚠️ IMPORTANT: Always reuse existing form.css classes for form fields**
+
+The project has a comprehensive set of form classes in `modules/Frontend/resources/assets/css/inner/form.css` that must be reused for all form fields:
+
+**✅ REQUIRED Form Classes to Use:**
+
+-   **Form Structure**: `.form-group` for form field containers
+-   **Input Fields**: `.form-control` for all input types (text, email, password, etc.)
+-   **Labels**: `.form-label` for field labels
+-   **Select Fields**: `.form-control` + `.select-w` wrapper for dropdowns
+-   **Textareas**: `.form-control` (automatically styled for textarea)
+-   **Checkboxes**: `.checkbox` or `.checkbox-2` for different checkbox styles
+-   **Error States**: `.error` class for validation errors
+-   **Small Inputs**: `.form-control.small` for compact inputs
+
+**✅ CORRECT Form Implementation:**
+
+```html
+<div class="form-group">
+    <label class="form-label">Field Label</label>
+    <input type="text" class="form-control" name="field_name" />
+</div>
+
+<div class="form-group">
+    <label class="form-label">Select Field</label>
+    <div class="select-w">
+        <select class="form-control" name="select_field">
+            <option>Option 1</option>
+        </select>
+    </div>
+</div>
+```
+
+**❌ INCORRECT Form Implementation:**
+
+```html
+<!-- Don't create custom classes for form fields -->
+<div class="custom-field">
+    <label class="custom-label">Field Label</label>
+    <input type="text" class="custom-input" name="field_name" />
+</div>
+```
+
+**Available Form Classes:**
+
+-   `.form-group` - Form field container
+-   `.form-control` - All input types (text, email, password, select, textarea)
+-   `.form-label` - Field labels
+-   `.select-w` - Select field wrapper with custom arrow
+-   `.checkbox` - Standard checkbox style
+-   `.checkbox-2` - Enhanced checkbox style for options
+-   `.error` - Error state styling
+-   `.small` - Compact input size modifier
+-   `.invalid-feedback` - Error message display
+-   `.form-group-w.flex-row` - Horizontal form layout
+-   `.file-upload` - File upload styling
+-   `.side-search-form` - Search form styling
+
+#### Reuse Main CSS Classes - AVOID UNUSED CLASSES
+
+**⚠️ IMPORTANT: Always reuse existing classes from main CSS files when applicable**
+
+The project has comprehensive utility classes in shared CSS files that must be reused instead of creating custom classes:
+
+**✅ REQUIRED: Reuse Classes From These Files:**
+
+**1. `shared/main-classes.css` - Utility Classes:**
+
+-   **Layout**: `.d-flex`, `.d-block`, `.d-none`, `.flex-column`, `.flex-row`
+-   **Alignment**: `.justify-content-center`, `.justify-content-between`, `.align-items-center`
+-   **Spacing**: `.mt-20`, `.mb-40`, `.p-0`, `.gap`, `.gap-small`
+-   **Text**: `.text-center`, `.text-right`, `.uppercase`, `.text-underline`
+-   **Backgrounds**: `.bg-primary`, `.bg-secondary`, `.bg-light-gray`
+-   **Lists**: `.list-plain`, `.check-list`, `.bullet-list`
+-   **Components**: `.box`, `.alert`, `.collapse`, `.hr`
+
+**2. `shared/buttons.css` - Button Classes:**
+
+-   **Button Types**: `.btn`, `.btn2`, `.btn-primary`, `.btn-secondary`, `.btn-danger`
+-   **Button Sizes**: `.btn-full` (full width)
+-   **Button States**: `:disabled`, `:hover` effects
+-   **Icon Buttons**: `.btn-icon`
+
+**3. `shared/grids.css` - Grid System:**
+
+-   **Containers**: `.container`, `.container-fluid`
+-   **Rows**: `.row`, `.row-5`, `.row-10`, `.row-20`, `.no-gutter`, `.no-padding`
+-   **Columns**: `.col-1` through `.col-12`, `.col-custom-5` (20%), responsive variants
+-   **Responsive**: `sm`, `md`, `lg`, `xl` breakpoints
+
+**4. `shared/base.css` - Base Elements:**
+
+-   **Base Styles**: Global reset, typography, form elements
+-   **Lazy Loading**: `.lazyloaded`, `.lazy-resized`
+-   **Loading States**: `.loading`, `.block-with-carousel.loading`
+
+**✅ CORRECT Class Usage:**
+
+```html
+<!-- Use existing utility classes -->
+<div class="d-flex justify-content-between align-items-center mb-20">
+    <h2 class="text-center">Title</h2>
+    <button class="btn btn-primary">Action</button>
+</div>
+
+<!-- Use existing grid classes -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-lg-4">Content</div>
+    </div>
+</div>
+
+<!-- Use existing component classes -->
+<div class="box box-small">
+    <div class="alert alert-success">Message</div>
+</div>
+```
+
+**❌ INCORRECT Class Usage:**
+
+```html
+<!-- Don't create custom classes when existing ones exist -->
+<div class="custom-flex custom-justify custom-align custom-margin">
+    <h2 class="custom-text-center">Title</h2>
+    <button class="custom-button">Action</button>
+</div>
+
+<!-- Don't create custom grid classes -->
+<div class="custom-container">
+    <div class="custom-row">
+        <div class="custom-column">Content</div>
+    </div>
+</div>
+```
+
+**⚠️ CRITICAL RULES:**
+
+1. **NEVER create custom classes** for functionality that exists in main CSS files
+2. **ALWAYS check main CSS files first** before creating new classes
+3. **ONLY create component-specific classes** that don't exist elsewhere
+4. **USE utility classes** for layout, spacing, alignment, and common patterns
+5. **AVOID unused classes** - every class must be actively used in CSS or jQuery
+
+**Class Usage Verification:**
+
+-   **CSS**: Every class must have styles defined and be used
+-   **jQuery**: Every class used in JavaScript must exist in CSS
+-   **HTML**: Every class must serve a purpose (styling or JavaScript targeting)
+-   **No Orphaned Classes**: Remove classes that are no longer used
+
+#### Icon Usage Rules
+
+**⚠️ IMPORTANT: Always use icons from the icomoon font library**
+
+The project uses a comprehensive icon font system located in `modules/Frontend/resources/assets/fonts/icomoon/style.css`. All icons must come from this file:
+
+**✅ REQUIRED: Icon Implementation:**
+
+1. **Icon Font Source**: `modules/Frontend/resources/assets/fonts/icomoon/style.css`
+2. **Icon Classes**: Use `icon-{name}` format (e.g., `icon-search`, `icon-calendar`, `icon-eye`)
+3. **Font Family**: Icons automatically use `icomoon` font family
+4. **Icon Elements**: Always use `<i>` tags for icons
+
+**✅ CORRECT Icon Usage:**
+
+```html
+<!-- Use icomoon icons with proper classes -->
+<i class="icon-search"></i>
+<i class="icon-calendar"></i>
+<i class="icon-eye"></i>
+<i class="icon-refresh"></i>
+<i class="icon-spinner"></i>
+
+<!-- Icons in buttons -->
+<button class="btn btn-primary">
+    <i class="icon-search"></i>
+    Search
+</button>
+
+<!-- Icons in links -->
+<a href="#" class="btn btn-secondary">
+    <i class="icon-refresh"></i>
+    Refresh
+</a>
+```
+
+**❌ INCORRECT Icon Usage:**
+
+```html
+<!-- Don't use custom icon classes -->
+<i class="custom-search-icon"></i>
+<i class="search-icon"></i>
+
+<!-- Don't use other icon libraries -->
+<i class="fas fa-search"></i>
+<i class="material-icons">search</i>
+
+<!-- Don't use SVG icons directly -->
+<svg class="icon">...</svg>
+```
+
+**Available Icon Categories:**
+
+**Common UI Icons:**
+
+-   **Actions**: `icon-search`, `icon-refresh`, `icon-close`, `icon-edit`, `icon-delete`
+-   **Navigation**: `icon-arrow-left`, `icon-arrow-right`, `icon-arrow-up`, `icon-arrow-down`
+-   **Status**: `icon-checkmark`, `icon-cross`, `icon-warning`, `icon-info`
+-   **User**: `icon-user`, `icon-profile`, `icon-login`, `icon-logout`
+-   **Content**: `icon-calendar`, `icon-clock`, `icon-location`, `icon-phone`
+
+**E-commerce Icons:**
+
+-   **Shopping**: `icon-cart`, `icon-shop`, `icon-heart`, `icon-wishlist`
+-   **Payment**: `icon-credit-card`, `icon-paypal`, `icon-coin-dollar`
+-   **Shipping**: `icon-truck`, `icon-box`, `icon-package`
+
+**Social Media Icons:**
+
+-   **Platforms**: `icon-facebook`, `icon-twitter`, `icon-instagram`, `icon-linkedin`
+-   **Communication**: `icon-whatsapp`, `icon-telegram`, `icon-email`
+
+**⚠️ CRITICAL RULES:**
+
+1. **NEVER create custom icon classes** - all icons must use `icon-{name}` format
+2. **ALWAYS check `style.css` first** before using any icon
+3. **ONLY use icomoon icons** - no external icon libraries or custom SVGs
+4. **USE consistent icon naming** - follow the established `icon-{name}` pattern
+5. **MAINTAIN icon consistency** - use the same icon for the same action across the app
+
+**Icon Implementation Best Practices:**
+
+-   **Semantic Usage**: Use icons that clearly represent their function
+-   **Accessibility**: Icons should complement text, not replace it
+-   **Consistency**: Use the same icon for the same action throughout the application
+-   **Performance**: Icon fonts are lightweight and scalable
+-   **Maintenance**: All icons are centralized in one font file
+
+**Icon Font Benefits:**
+
+-   **Scalable**: Icons scale perfectly at any size
+-   **Lightweight**: Single font file contains all icons
+-   **Consistent**: Uniform styling and alignment
+-   **Accessible**: Screen reader friendly
+-   **Maintainable**: Centralized icon management
+
+#### Grid System Usage Rules
+
+**⚠️ IMPORTANT: Always use grid classes from grids.css instead of custom layout classes**
+
+The project has a comprehensive grid system in `modules/Frontend/resources/assets/css/shared/grids.css` that must be used for all layout structures:
+
+**✅ REQUIRED: Grid System Implementation:**
+
+1. **Grid Source**: `modules/Frontend/resources/assets/css/shared/grids.css`
+2. **Container Classes**: Use `.container` or `.container-fluid` for page wrappers
+3. **Row Classes**: Use `.row` with gutter variants (`.row-5`, `.row-10`, `.row-20`)
+4. **Column Classes**: Use responsive column classes (`.col-md-6`, `.col-lg-4`, etc.)
+5. **Utility Classes**: Use `.no-gutter`, `.no-padding` for special cases
+
+**✅ CORRECT Grid Usage:**
+
+```html
+<!-- Use existing grid classes -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-lg-4">Content</div>
+        <div class="col-md-6 col-lg-4">Content</div>
+        <div class="col-md-12 col-lg-4">Content</div>
+    </div>
+</div>
+
+<!-- Use gutter variants -->
+<div class="row row-10">
+    <div class="col-6">Tight spacing</div>
+    <div class="col-6">Tight spacing</div>
+</div>
+
+<!-- Use utility classes -->
+<div class="row no-gutter">
+    <div class="col-6">No gutters</div>
+    <div class="col-6">No gutters</div>
+</div>
+```
+
+**❌ INCORRECT Grid Usage:**
+
+```html
+<!-- Don't create custom grid classes -->
+<div class="custom-container">
+    <div class="custom-row">
+        <div class="custom-column">Content</div>
+    </div>
+</div>
+
+<!-- Don't use inline styles for layout -->
+<div style="display: grid; grid-template-columns: 1fr 1fr;">
+    <div>Content</div>
+</div>
+```
+
+**Available Grid Classes:**
+
+**Containers:**
+
+-   `.container` - Fixed width container with responsive breakpoints
+-   `.container-fluid` - Full width container with padding
+
+**Rows:**
+
+-   `.row` - Standard row with default gutters
+-   `.row-5` - Row with 5px gutters
+-   `.row-10` - Row with 10px gutters
+-   `.row-20` - Row with 20px gutters
+-   `.no-gutter` - Row without gutters
+-   `.no-padding` - Row without bottom padding
+
+**Columns:**
+
+-   **Base**: `.col-1` through `.col-12` (8.33% to 100%)
+-   **Custom**: `.col-custom-5` (20% width)
+-   **Responsive**: `.col-sm-*`, `.col-md-*`, `.col-lg-*`, `.col-xl-*`
+-   **Auto**: `.col-auto` (auto-sizing)
+
+**⚠️ CRITICAL GRID RULES:**
+
+1. **NEVER create custom grid classes** - all layout must use existing grid system
+2. **ALWAYS check grids.css first** before creating layout classes
+3. **ONLY use responsive column classes** for different screen sizes
+4. **USE appropriate gutter variants** for different spacing needs
+5. **MAINTAIN grid consistency** across all pages and components
+
+#### Icon Verification Requirements
+
+**⚠️ IMPORTANT: Always verify icons exist in style.css before using them**
+
+Before using any icon class, developers must verify it exists in the icomoon font library:
+
+**✅ REQUIRED: Icon Verification Process:**
+
+1. **Check style.css**: Search for `.icon-{name}:before` in `modules/Frontend/resources/assets/fonts/icomoon/style.css`
+2. **Verify existence**: Ensure the icon class is defined with proper content
+3. **Use only verified icons**: Never use icon classes that don't exist in the file
+4. **Report missing icons**: If an icon is needed but doesn't exist, request it to be added
+
+**✅ CORRECT Icon Verification:**
+
+```css
+/* In style.css - VERIFIED ICONS */
+.icon-search:before {
+    content: "\e905";
+}
+.icon-calendar:before {
+    content: "\e901";
+}
+.icon-eye:before {
+    content: "\e9fe";
+}
+```
+
+**❌ INCORRECT Icon Usage:**
+
+```html
+<!-- Don't use unverified icon classes -->
+<i class="icon-non-existent"></i>
+<i class="icon-custom-icon"></i>
+<i class="icon-unknown"></i>
+```
+
+**Icon Verification Checklist:**
+
+-   [ ] **Search style.css**: Look for `.icon-{name}:before` declaration
+-   [ ] **Check content property**: Ensure icon has valid Unicode content
+-   [ ] **Verify font-family**: Confirm icon uses `icomoon` font
+-   [ ] **Test rendering**: Verify icon displays correctly in browser
+-   [ ] **Document usage**: Use only verified icons in production code
+
+**Common Verified Icons (Always Available):**
+
+-   `icon-search` ✅ - Search functionality
+-   `icon-calendar` ✅ - Date/time functionality
+-   `icon-eye` ✅ - View/visibility functionality
+-   `icon-arrow-left` ✅ - Navigation left
+-   `icon-arrow-right` ✅ - Navigation right
+-   `icon-user` ✅ - User/profile functionality
+-   `icon-cart` ✅ - Shopping cart functionality
+-   `icon-heart` ✅ - Favorites/wishlist functionality
+
+**⚠️ ICON VERIFICATION CRITICAL RULES:**
+
+1. **ALWAYS verify icon exists** in style.css before using
+2. **NEVER assume icon exists** - check the file first
+3. **USE only verified icons** - no unverified icon classes
+4. **REPORT missing icons** - don't create workarounds
+5. **MAINTAIN icon integrity** - ensure all used icons are documented
+
+#### Adding New Pages - Correct Process
+
+**For Inner Pages (like About, Services, Contact):**
+
+1. **Create Template**: `resources/views/templates/inner/page_name.blade.php`
+2. **Use Existing Page View**: `resources/views/pages.blade.php` (dynamically includes templates)
+3. **Set Asset**: `@section('asset_name', 'inner')` (uses inner.css)
+4. **Create Component CSS**: `resources/assets/css/items/page_name.css`
+5. **Import in inner.css**: Add `@import "./items/page_name.css";`
+6. **Add JavaScript**: `resources/assets/js/page_name.js` (add to Vite config)
+7. **Add Route**: `Route::get('/page-name', function () { return view('pages'); })`
+
+**For Homepage Sections:**
+
+1. **Create Template**: `resources/views/templates/homepage/section_name.blade.php`
+2. **Create Component CSS**: `resources/assets/css/items/section_name.css`
+3. **Import in home.css**: Add `@import "./items/section_name.css";`
+
+**Key Rules:**
+
+-   **Never create standalone CSS files** in the root css folder
+-   **Always import component styles** through main CSS files
+-   **Use 'inner' asset** for inner pages, 'home' for homepage
+-   **Component CSS goes in items/**, imported through main CSS
+
+#### Template Organization
+
+**Dynamic Template System:**
+
+The project uses a dynamic template inclusion system where:
+
+-   **`pages.blade.php`** serves as the main view for inner pages
+-   **Templates** are stored in `resources/views/templates/inner/`
+-   **Route parameters** determine which template to include
+-   **No need** to create individual page views for each inner page
+
+**✅ CORRECT Template Structure:**
+
+```
+resources/views/
+├── layouts/
+│   └── app.blade.php          # Main layout
+├── templates/
+│   ├── components/            # Reusable components
+│   │   ├── section_head.blade.php
+│   │   └── news.blade.php
+│   ├── homepage/              # Homepage-specific templates
+│   │   ├── main_slider.blade.php
+│   │   ├── about.blade.php
+│   │   └── news.blade.php
+│   └── inner/                 # Inner page templates
+│       ├── page_name.blade.php # Page component template
+│       ├── news.blade.php     # News component template
+│       └── statements.blade.php
+├── home.blade.php             # Homepage (includes homepage templates)
+└── pages.blade.php            # Dynamic page view (includes templates based on route parameter)
+```
+
+**📋 Template Rules:**
+
+1. **Component templates** go in `templates/components/` (reusable across pages)
+2. **Homepage templates** go in `templates/homepage/` (homepage-specific sections)
+3. **Inner page templates** go in `templates/inner/` (inner page content)
+4. **Page views** use `pages.blade.php` for dynamic template inclusion
+5. **Templates** contain the actual content and markup
+6. **Route parameters** determine which template to include dynamically
+
+### Translation System
+
+**⚠️ IMPORTANT: Frontend Translation Rules**
+
+-   **Use `__('theme.key')` format**: Always use `__('theme.key')` for frontend translations
+-   **Dynamic keys**: Keys can be dynamic using concatenation: `__('theme.' . $status)`
+-   **No DBTrans**: Do not use `DBTrans()` or `trans_cms()` for frontend content
+-   **Theme namespace**: All frontend translations use the `theme` namespace
+-   **Translation files**: Frontend translations go in theme language files, not plugin files
+
+**✅ CORRECT Translation Usage:**
+
+```php
+{{ __('theme.filter_orders') }}
+{{ __('theme.' . $order->status) }}
+{{ __('theme.total_orders') }}
+```
+
+**❌ INCORRECT Translation Usage:**
+
+```php
+{{ DBTrans('ecom.filter_orders') }}
+{{ trans_cms('ecom.filter_orders') }}
+{{ trans('ecom.filter_orders') }}
+```
+
+### JavaScript Development Rules
+
+**⚠️ IMPORTANT: JavaScript Implementation Rules**
+
+-   **jQuery Only**: Always use jQuery for JavaScript functionality
+-   **No Vanilla JS**: Do not use vanilla JavaScript or modern ES6+ features
+-   **File Organization**: All JavaScript goes in dedicated JS files, never inline in Blade templates
+-   **Inner.js Integration**: Page-specific functionality should be added to `inner.js` for inner pages
+-   **Event Handling**: Use jQuery event handlers and selectors
+
+**✅ CORRECT JavaScript Implementation:**
+
+```javascript
+// In inner.js or dedicated JS file
+$(document).ready(function () {
+    $(".orders-filter__input--start-date").on("change", function () {
+        // jQuery functionality
+    });
+});
+```
+
+**❌ INCORRECT JavaScript Implementation:**
+
+```php
+{{-- In Blade template --}}
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Vanilla JS - NOT ALLOWED
+    });
+</script>
+@endsection
+```
+
+**JavaScript File Organization:**
+
+```
+modules/Frontend/resources/assets/js/
+├── jquery.js        # Main jQuery library
+├── shared.js        # Common functions and utilities
+├── home.js          # Homepage-specific JavaScript
+├── inner.js         # Inner page JavaScript (includes orders functionality)
+└── plugins/         # jQuery plugins and extensions
+```
+
+### CSS Custom Properties & Design System
+
+-   **CSS Custom Properties**: Define design tokens in `shared/vars.css`
+-   **Color Palette**: Use semantic color names (e.g., `--primary-color`, `--secondary-color`, `--success-color`)
+-   **Typography Scale**: Define font sizes and line heights (e.g., `--font-size-base`, `--line-height-base`)
+-   **Spacing System**: Use consistent spacing values (e.g., `--spacing-xs`, `--spacing-sm`, `--spacing-lg`)
+-   **Shadows & Effects**: Standardize shadows and transitions (e.g., `--shadow-sm`, `--transition-base`)
+
+#### jQuery File Organization
+
+```
+resources/assets/js/
+├── jquery.js        # Main jQuery library
+├── shared.js        # Common functions and utilities
+├── home.js          # Homepage-specific JavaScript
+├── inner.js         # Inner page JavaScript
+└── plugins/         # jQuery plugins and extensions
+    ├── contact.js   # Contact form functionality
+    ├── slider.js    # Slider/carousel functionality
+    ├── validation.js # Form validation
+    └── ...
+```
+
+#### jQuery Usage Guidelines
+
+-   **Document Ready**: Always wrap jQuery code in `$(document).ready()` or `$(function() {})`
+-   **Event Delegation**: Use event delegation for dynamic content (e.g., `$(document).on('click', '.dynamic-element')`)
+-   **Plugin Pattern**: Create reusable jQuery plugins for complex functionality
+-   **Performance**: Cache jQuery selectors and avoid DOM queries in loops
+-   **Modern Features**: Use ES6+ features where appropriate, jQuery for DOM manipulation
+-   **Error Handling**: Implement proper error handling for AJAX calls and user interactions
+
+#### Lazy Loading Implementation
+
+The project uses **lazysizes** library for efficient image lazy loading with the following setup:
+
+##### **Library Integration**
+
+-   **Package**: `lazysizes` v5.3.2 installed via npm
+-   **Import**: Automatically imported in `shared.js` and `inner.js` for global availability
+-   **Configuration**: Uses default lazysizes configuration with custom CSS classes
+
+##### **CSS Classes & States**
+
+```css
+/* Loading state - shows loader gif */
+.lazyload,
+.lazyloading {
+    background-color: transparent;
+    background-image: url(loader.gif);
+    background-size: 64px 64px !important;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Loaded state - removes loader, shows actual image */
+.lazyloaded {
+    height: auto;
+    width: auto;
+}
+```
+
+##### **PHP Helper Functions**
+
+Two main helper functions for generating lazy-loaded images:
+
+1. **`lazyloadImageResize($path, $width, $height, $attrs, $disabled = false)`**
+
+    - Generates resized images with lazy loading
+    - Automatically adds `lazyload` class
+    - Uses `data-src` attribute for actual image URL
+    - Sets placeholder as transparent 1x1 GIF
+
+2. **`lazyloadImage($path, $width, $height, $disabled = false, $title = "")`**
+    - Generates standard images with lazy loading
+    - Automatically extracts alt text from image metadata
+    - Same lazy loading behavior as resize function
+
+##### **HTML Implementation**
+
+```php
+{{-- Using helper functions --}}
+{!! lazyloadImageResize($item->getThumbnail('650x400'), 397, 297, $attr) !!}
+{!! lazyloadImage($imagePath, 300, 200) !!}
+
+{{-- Manual implementation --}}
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+     data-src="{{ $imageUrl }}"
+     width="300" height="200"
+     alt="Description"
+     class="lazyload">
+```
+
+##### **Lazy Loading Best Practices**
+
+-   **Always use helper functions** instead of manual HTML for consistency
+-   **Set proper dimensions** (width/height) to prevent layout shifts
+-   **Provide meaningful alt text** for accessibility
+-   **Use appropriate image sizes** for different screen resolutions
+-   **Test loading states** to ensure smooth user experience
+-   **Monitor performance** using browser dev tools
+
+##### **Supported Image Types**
+
+-   **Storage images**: Automatically handled via `upload_url()` helper
+-   **External URLs**: Direct URL support for external images
+-   **Responsive images**: Support for different sizes via resize function
+-   **Background images**: CSS-based lazy loading for background images
+
+##### **Performance Benefits**
+
+-   **Reduced initial page load time** by deferring off-screen images
+-   **Bandwidth optimization** by loading images only when needed
+-   **Improved Core Web Vitals** (LCP, CLS) scores
+-   **Better mobile performance** on slower connections
+-   **SEO benefits** from faster page loading
+
+#### Vite Configuration Details
+
+The `vite.config.frontend.mjs` handles:
+
+-   **Entry Points**: Multiple CSS and JS entry points for different page types
+-   **Asset Copying**: Automatic copying of fonts and images to public directory
+-   **PostCSS Processing**: RTL support and CSS optimization
+-   **Build Output**: Organized output structure in `public/front/` directory
+
+#### Adding New Assets to Vite
+
+To add new CSS/JS files:
+
+1. **JavaScript Files**: Add to the `input` array in `vite.config.frontend.mjs`
+2. **CSS Component Files**: Place in `resources/assets/css/items/` and import through main CSS files
+3. **CSS Import Strategy**:
+    - **home.css**: Import homepage-specific component styles
+    - **inner.css**: Import inner page and feature component styles
+    - **Never create standalone CSS files** in the root css folder
+4. **Build Process**: Run `npm run build:frontend` to compile new assets
+5. **Include in Views**: Use `@vite()` directive with the main CSS file (home.css or inner.css)
+
+### File Organization
+
+-   **Controllers**: `app/Http/Controllers/` - Keep controllers thin, move business logic to services
+-   **Models**: `app/Models/` - Use Eloquent relationships and scopes
+-   **Views**: `resources/views/` - Use Blade templates with proper componentization
+-   **Assets**: `resources/assets/` - Organized by type (css, js, images, fonts)
+-   **Helpers**: `Helpers/` - Custom PHP helper functions
+-   **Routes**: `routes/web.php` - Keep routes clean and organized
+
+### Asset Management
+
+-   **CSS**: Place in `resources/assets/css/` with subdirectories for organization
+-   **JavaScript**: Place in `resources/assets/js/` with plugins in subdirectories
+-   **Images**: Place in `resources/assets/images/` - will be copied to public during build
+-   **Fonts**: Place in `resources/assets/fonts/` - supports multiple formats (eot, svg, ttf, woff, woff2)
+
+### Build Process
+
+-   **Development**: `npm run dev` - starts Vite dev server
+-   **Frontend Build**: `npm run build:frontend` - builds frontend assets
+-   **Watch Mode**: `npm run watch:frontend` - watches for changes and rebuilds
+-   **Full Dev**: `composer run dev` - starts all services (server, queue, logs, vite)
+
+#### Asset Build Pipeline
+
+1. **CSS Processing**: PostCSS with RTL support, autoprefixer, and optimization
+2. **JavaScript Bundling**: ES6+ transpilation, jQuery compatibility, plugin bundling
+3. **Asset Optimization**: Image compression, font optimization, CSS/JS minification
+4. **Output Structure**: Organized assets in `public/front/` with hashed filenames
+5. **Development Server**: Hot module replacement for CSS and fast refresh for JS
+
+#### Asset Inclusion in Views
+
+```php
+{{-- In Blade templates --}}
+@vite(['resources/assets/css/home.css', 'resources/assets/js/home.js'])
+```
+
+## Common Commands
+
+```bash
+# Development
+composer run dev          # Start all development services
+npm run dev              # Start Vite dev server
+npm run build:frontend   # Build frontend assets
+npm run watch:frontend   # Watch and rebuild frontend
+```
+
+### Responsive Design Approach
+
+-   **Mobile First**: Start with mobile styles, then enhance for larger screens
+-   **Breakpoint Strategy**: Use consistent breakpoints defined in CSS variables
+-   **Flexible Grid**: Implement CSS Grid or Flexbox for responsive layouts
+-   **Touch Friendly**: Ensure touch targets are at least 44x44px on mobile
+-   **Performance**: Optimize images and assets for different screen sizes
+
+### Accessibility Guidelines
+
+-   **Semantic HTML**: Use proper heading hierarchy and semantic elements
+-   **ARIA Labels**: Add appropriate ARIA attributes for complex interactions
+-   **Keyboard Navigation**: Ensure all interactive elements are keyboard accessible
+-   **Color Contrast**: Maintain WCAG AA contrast ratios (4.5:1 for normal text)
+-   **Focus Management**: Provide visible focus indicators and logical tab order
