@@ -1,20 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Student Registration Form')
+@section('title', 'Edit Student')
 
 @section('content')
 <div class="container">
     <div class="form-wrapper">
-        <h1>Student Registration Form</h1>
+        <h1>Edit Student</h1>
 
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        <form action="{{ route('students.store') }}" method="POST" id="student-form">
+        <form action="{{ route('students.update', $student) }}" method="POST" id="student-form">
             @csrf
+            @method('PUT')
             
             <div class="form-group">
                 <label for="name">Full Name</label>
@@ -23,7 +18,7 @@
                     id="name" 
                     name="name" 
                     class="form-control @error('name') is-invalid @enderror" 
-                    value="{{ old('name') }}" 
+                    value="{{ old('name', $student->name) }}" 
                     required
                 >
                 @error('name')
@@ -38,7 +33,7 @@
                     id="email" 
                     name="email" 
                     class="form-control @error('email') is-invalid @enderror" 
-                    value="{{ old('email') }}" 
+                    value="{{ old('email', $student->email) }}" 
                     required
                 >
                 @error('email')
@@ -53,7 +48,7 @@
                     id="phone" 
                     name="phone" 
                     class="form-control @error('phone') is-invalid @enderror" 
-                    value="{{ old('phone') }}" 
+                    value="{{ old('phone', $student->phone) }}" 
                     placeholder="e.g., 1234567890"
                     maxlength="10"
                     required
@@ -70,7 +65,7 @@
                     id="id_card" 
                     name="id_card" 
                     class="form-control @error('id_card') is-invalid @enderror" 
-                    value="{{ old('id_card') }}" 
+                    value="{{ old('id_card', $student->id_card) }}" 
                     placeholder="e.g., 123456789"
                     maxlength="9"
                     required
@@ -80,7 +75,10 @@
                 @enderror
             </div>
 
-            <button type="submit" class="btn btn-primary">Register Student</button>
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">Update Student</button>
+                <a href="{{ route('students.index') }}" class="btn btn-secondary">Cancel</a>
+            </div>
         </form>
     </div>
 </div>

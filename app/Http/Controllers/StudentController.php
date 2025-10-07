@@ -8,6 +8,15 @@ use Illuminate\Http\Request;
 class StudentController extends Controller
 {
     /**
+     * Display a listing of students
+     */
+    public function index()
+    {
+        $students = Student::latest()->get();
+        return view('students.index', compact('students'));
+    }
+
+    /**
      * Show the student registration form
      */
     public function create()
@@ -23,12 +32,47 @@ class StudentController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20|unique:students,phone',
-            'id_card' => 'required|string|max:50',
+            'phone' => 'required|digits:10|unique:students,phone',
+            'id_card' => 'required|digits:9|unique:students,id_card',
         ]);
 
-        $student = Student::create($validated);
+        Student::create($validated);
 
-        return redirect()->back()->with('success', 'Student registered successfully!');
+        return redirect()->route('students.index')->with('success', 'Student registered successfully!');
+    }
+
+    /**
+     * Show the form for editing a student
+     */
+    public function edit(Student $student)
+    {
+        return view('students.edit', compact('student'));
+    }
+
+    /**
+     * Update the specified student
+     */
+    public function update(Request $request, Student $student)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|digits:10|unique:students,phone,' . $student->id,
+            'id_card' => 'required|digits:9|unique:students,id_card,' . $student->id,
+        ]);
+
+        $student->update($validated);
+
+        return redirect()->route('students.index')->with('success', 'Student updated successfully!');
+    }
+
+    /**
+     * Soft delete the specified student
+     */
+    public function destroy(Student $student)
+    {
+        $student->delete();
+
+        return redirect()->route('students.index')->with('success', 'Student deleted successfully!');
     }
 }

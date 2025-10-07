@@ -83,12 +83,21 @@ function validateField(field) {
         }
     }
 
-    // Phone validation (basic)
+    // Phone validation (10 digits exactly)
     if (fieldName === 'phone' && value) {
-        const phonePattern = /^[\d\s\-\+\(\)]+$/;
+        const phonePattern = /^\d{10}$/;
         if (!phonePattern.test(value)) {
             isValid = false;
-            errorMessage = 'Please enter a valid phone number.';
+            errorMessage = 'Phone number must be exactly 10 digits.';
+        }
+    }
+
+    // ID Card validation (9 digits exactly)
+    if (fieldName === 'id_card' && value) {
+        const idCardPattern = /^\d{9}$/;
+        if (!idCardPattern.test(value)) {
+            isValid = false;
+            errorMessage = 'ID Card must be exactly 9 digits.';
         }
     }
 
@@ -118,13 +127,25 @@ function getFieldLabel(field) {
 }
 
 /**
- * Phone number formatting (optional enhancement)
+ * Phone number formatting - only digits (10 digits max)
  */
 const phoneInput = document.getElementById('phone');
 if (phoneInput) {
     phoneInput.addEventListener('input', function(e) {
-        // Remove non-numeric characters except +, -, (, ), and space
-        let value = e.target.value.replace(/[^\d\s\-\+\(\)]/g, '');
+        // Remove non-numeric characters
+        let value = e.target.value.replace(/\D/g, '');
+        e.target.value = value;
+    });
+}
+
+/**
+ * ID Card formatting - only digits (9 digits max)
+ */
+const idCardInput = document.getElementById('id_card');
+if (idCardInput) {
+    idCardInput.addEventListener('input', function(e) {
+        // Remove non-numeric characters
+        let value = e.target.value.replace(/\D/g, '');
         e.target.value = value;
     });
 }
