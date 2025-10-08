@@ -1,0 +1,77 @@
+/* Admin Panel Styles */
+
+/* Alert Error */
+.alert-error {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #ef4444;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+/* Login Helper Text */
+.login-helper {
+    margin-top: 20px;
+    text-align: center;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.login-helper strong {
+    color: #4f46e5;
+    font-weight: 600;
+}
+
+/* Verified Badge */
+.verified-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.verified-badge.verified {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.verified-badge.unverified {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+/* Verify Checkbox */
+.verify-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    margin-right: 0.5rem;
+}
+
+.verify-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+}
+
+.verify-checkbox span {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--label-color);
+}
+
+.verify-checkbox input[type="checkbox"]:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Delete Form */
+.delete-form {
+    display: inline-block;
+}
+

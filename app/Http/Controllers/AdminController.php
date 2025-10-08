@@ -21,7 +21,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Process admin login (dummy data)
+     * Process admin login (check against database)
      */
     public function authenticate(Request $request)
     {
@@ -30,9 +30,15 @@ class AdminController extends Controller
             'password' => 'required',
         ]);
 
-        // Dummy credentials
-        if ($request->username === 'admin' && $request->password === 'admin123') {
-            session(['admin_logged_in' => true]);
+        // Check credentials against database
+        $admin = \DB::table('admins')->where('username', $request->username)->first();
+
+        if ($admin && \Hash::check($request->password, $admin->password)) {
+            session([
+                'admin_logged_in' => true,
+                'admin_id' => $admin->id,
+                'admin_username' => $admin->username
+            ]);
             return redirect()->route('admin.dashboard')->with('success', 'Welcome Admin!');
         }
 

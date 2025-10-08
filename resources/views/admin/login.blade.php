@@ -55,22 +55,10 @@
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
 
-        <div style="margin-top: 20px; text-align: center; color: #6b7280;">
+        <div class="login-helper">
             <small>Demo Credentials: <strong>admin</strong> / <strong>admin123</strong></small>
         </div>
     </div>
 </div>
-
-<style>
-.alert-error {
-    background-color: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #ef4444;
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    font-weight: 500;
-}
-</style>
 @endsection
 

@@ -60,7 +60,7 @@
                                         <span>Verify</span>
                                     </label>
                                     <a href="{{ route('students.edit', $student) }}" class="btn btn-secondary btn-sm">Edit</a>
-                                    <form action="{{ route('students.destroy', $student) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this student?');">
+                                    <form action="{{ route('students.destroy', $student) }}" method="POST" class="delete-form">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -78,96 +78,5 @@
         @endif
     </div>
 </div>
-
-<style>
-.verified-badge {
-    padding: 0.25rem 0.75rem;
-    border-radius: 12px;
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-.verified-badge.verified {
-    background-color: #d1fae5;
-    color: #065f46;
-}
-
-.verified-badge.unverified {
-    background-color: #fee2e2;
-    color: #991b1b;
-}
-
-.verify-checkbox {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    margin-right: 0.5rem;
-}
-
-.verify-checkbox input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-}
-
-.verify-checkbox span {
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-</style>
-
-<script>
-$(document).ready(function() {
-    // Handle verify checkbox change
-    $('.verify-student').on('change', function() {
-        const checkbox = $(this);
-        const studentId = checkbox.data('student-id');
-        const row = checkbox.closest('tr');
-        const badge = row.find('.verified-badge');
-        
-        // Disable checkbox during request
-        checkbox.prop('disabled', true);
-        
-        $.ajax({
-            url: '/admin/students/' + studentId + '/verify',
-            method: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                if (response.success) {
-                    // Update badge
-                    if (response.verified) {
-                        badge.removeClass('unverified').addClass('verified').text('Verified');
-                    } else {
-                        badge.removeClass('verified').addClass('unverified').text('Not Verified');
-                    }
-                    
-                    // Show success message
-                    showMessage(response.message, 'success');
-                }
-                checkbox.prop('disabled', false);
-            },
-            error: function() {
-                alert('Error updating verification status');
-                // Revert checkbox
-                checkbox.prop('checked', !checkbox.prop('checked'));
-                checkbox.prop('disabled', false);
-            }
-        });
-    });
-    
-    function showMessage(message, type) {
-        const alertDiv = $('<div class="alert alert-' + type + '"></div>').text(message);
-        $('.header-section').after(alertDiv);
-        setTimeout(function() {
-            alertDiv.fadeOut(500, function() {
-                $(this).remove();
-            });
-        }, 3000);
-    }
-});
-</script>
 @endsection
 
