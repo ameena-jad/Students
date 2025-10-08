@@ -17,6 +17,10 @@
         @endif
 
         @if($students->count() > 0)
+            <div class="search-box">
+                <input type="text" id="table-search" placeholder="Search students by name, email, phone, or ID card..." />
+            </div>
+            
             <div class="table-responsive">
                 <table class="students-table">
                     <thead>

@@ -1,0 +1,115 @@
+/* Students Wrapper */
+.students-wrapper {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+}
+
+/* Header Section */
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.header-section h1 {
+    margin: 0;
+}
+
+.header-section .btn {
+    width: auto;
+    margin: 0;
+}
+
+/* Search Box */
+.search-box {
+    margin-bottom: var(--spacing-md);
+}
+
+.search-box input {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.75rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Table Styles */
+.table-responsive {
+    overflow-x: auto;
+    margin-top: var(--spacing-md);
+}
+
+.students-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.students-table thead {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.students-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+}
+
+.students-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.9rem;
+}
+
+.students-table tbody tr:hover {
+    background-color: var(--background-light);
+}
+
+.actions-cell {
+    white-space: nowrap;
+}
+
+.actions-cell form {
+    display: inline-block;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-lg);
+    color: var(--label-color);
+}
+
+.empty-state p {
+    font-size: 1.125rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.empty-state .btn {
+    width: auto;
+}
+
+/* No Results Message */
+.no-results {
+    text-align: center;
+    color: var(--label-color);
+    padding: var(--spacing-md);
+    font-size: 1rem;
+    font-style: italic;
+}
+

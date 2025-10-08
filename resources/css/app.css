@@ -1,3 +1,8 @@
+/* Import separate CSS files */
+@import "./buttons.css";
+@import "./form.css";
+@import "./table.css";
+
 /* CSS Variables */
 :root {
     --primary-color: #4f46e5;
@@ -40,14 +45,6 @@ body {
     padding: var(--spacing-md);
 }
 
-/* Form Wrapper */
-.form-wrapper {
-    background: white;
-    border-radius: var(--border-radius);
-    padding: var(--spacing-lg);
-    box-shadow: var(--shadow-md);
-}
-
 /* Heading */
 h1 {
     font-size: 2rem;
@@ -69,212 +66,6 @@ h1 {
     background-color: #d1fae5;
     color: #065f46;
     border: 1px solid var(--success-color);
-}
-
-/* Form Group */
-.form-group {
-    margin-bottom: var(--spacing-md);
-}
-
-/* Labels */
-label {
-    display: block;
-    font-weight: 600;
-    color: var(--label-color);
-    margin-bottom: var(--spacing-xs);
-    font-size: 0.875rem;
-}
-
-/* Form Controls */
-.form-control {
-    width: 100%;
-    padding: 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: var(--text-color);
-    background-color: white;
-    border: 2px solid var(--border-color);
-    border-radius: var(--border-radius);
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.form-control:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-}
-
-.form-control.is-invalid {
-    border-color: var(--error-color);
-}
-
-.form-control.is-invalid:focus {
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-}
-
-/* Error Messages */
-.error-message {
-    display: block;
-    color: var(--error-color);
-    font-size: 0.875rem;
-    margin-top: var(--spacing-xs);
-    font-weight: 500;
-}
-
-/* Button */
-.btn {
-    display: inline-block;
-    font-weight: 600;
-    text-align: center;
-    text-decoration: none;
-    vertical-align: middle;
-    cursor: pointer;
-    user-select: none;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border-radius: var(--border-radius);
-    transition: all 0.15s ease-in-out;
-}
-
-.btn-primary {
-    color: white;
-    background-color: var(--primary-color);
-    width: 100%;
-    margin-top: var(--spacing-sm);
-}
-
-.btn-primary:hover {
-    background-color: var(--primary-hover);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
-}
-
-.btn-primary:active {
-    transform: translateY(0);
-}
-
-.btn-secondary {
-    color: white;
-    background-color: #6b7280;
-}
-
-.btn-secondary:hover {
-    background-color: #4b5563;
-}
-
-.btn-danger {
-    color: white;
-    background-color: var(--error-color);
-}
-
-.btn-danger:hover {
-    background-color: #dc2626;
-}
-
-.btn-sm {
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    width: auto;
-    margin: 0.25rem;
-}
-
-/* Students Wrapper */
-.students-wrapper {
-    background: white;
-    border-radius: var(--border-radius);
-    padding: var(--spacing-lg);
-    box-shadow: var(--shadow-md);
-}
-
-/* Header Section */
-.header-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--spacing-lg);
-    flex-wrap: wrap;
-    gap: var(--spacing-sm);
-}
-
-.header-section h1 {
-    margin: 0;
-}
-
-.header-section .btn {
-    width: auto;
-    margin: 0;
-}
-
-/* Table Styles */
-.table-responsive {
-    overflow-x: auto;
-    margin-top: var(--spacing-md);
-}
-
-.students-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-}
-
-.students-table thead {
-    background-color: var(--primary-color);
-    color: white;
-}
-
-.students-table th {
-    padding: 1rem;
-    text-align: left;
-    font-weight: 600;
-    font-size: 0.875rem;
-    text-transform: uppercase;
-}
-
-.students-table td {
-    padding: 1rem;
-    border-bottom: 1px solid var(--border-color);
-    font-size: 0.9rem;
-}
-
-.students-table tbody tr:hover {
-    background-color: var(--background-light);
-}
-
-.actions-cell {
-    white-space: nowrap;
-}
-
-.actions-cell form {
-    display: inline-block;
-}
-
-/* Empty State */
-.empty-state {
-    text-align: center;
-    padding: var(--spacing-lg);
-    color: var(--label-color);
-}
-
-.empty-state p {
-    font-size: 1.125rem;
-    margin-bottom: var(--spacing-md);
-}
-
-.empty-state .btn {
-    width: auto;
-}
-
-/* Button Group */
-.button-group {
-    display: flex;
-    gap: var(--spacing-sm);
-    margin-top: var(--spacing-md);
-}
-
-.button-group .btn {
-    flex: 1;
 }
 
 /* Responsive Design */
@@ -321,5 +112,8 @@ label {
     .button-group {
         flex-direction: column;
     }
-}
 
+    .search-box input {
+        max-width: 100%;
+    }
+}
