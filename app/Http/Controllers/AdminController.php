@@ -48,15 +48,27 @@ class AdminController extends Controller
     /**
      * Show admin dashboard with students list
      */
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         // Check if admin is logged in
         if (!session('admin_logged_in')) {
             return redirect()->route('admin.login');
         }
 
-        $students = Student::latest()->get();
-        return view('admin.dashboard', compact('students'));
+        // Filter by verification status
+        $filter = $request->get('filter', 'all');
+        
+        $query = Student::query();
+        
+        if ($filter === 'verified') {
+            $query->whereNotNull('verified_at');
+        } elseif ($filter === 'unverified') {
+            $query->whereNull('verified_at');
+        }
+        
+        $students = $query->latest()->get();
+        
+        return view('admin.dashboard', compact('students', 'filter'));
     }
 
     /**

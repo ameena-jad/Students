@@ -16,6 +16,21 @@
             </div>
         @endif
 
+        <div class="filter-buttons">
+            <a href="{{ route('admin.dashboard', ['filter' => 'all']) }}" 
+               class="filter-btn {{ (!isset($filter) || $filter === 'all') ? 'active' : '' }}">
+                All Students
+            </a>
+            <a href="{{ route('admin.dashboard', ['filter' => 'verified']) }}" 
+               class="filter-btn {{ $filter === 'verified' ? 'active' : '' }}">
+                Verified Only
+            </a>
+            <a href="{{ route('admin.dashboard', ['filter' => 'unverified']) }}" 
+               class="filter-btn {{ $filter === 'unverified' ? 'active' : '' }}">
+                Unverified Only
+            </a>
+        </div>
+
         @if($students->count() > 0)
             <div class="search-box">
                 <input type="text" id="table-search" placeholder="Search students by name, email, phone, or ID card..." />
