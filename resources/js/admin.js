@@ -19,17 +19,14 @@ export function initAdminPanel() {
             },
             success: function(response) {
                 if (response.success) {
-                    // Update badge
-                    if (response.verified) {
-                        badge.removeClass('unverified').addClass('verified').text('Verified');
-                    } else {
-                        badge.removeClass('verified').addClass('unverified').text('Not Verified');
-                    }
-                    
                     // Show success message
                     showMessage(response.message, 'success');
+                    
+                    // Reload page after short delay to refresh table with filter
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000);
                 }
-                checkbox.prop('disabled', false);
             },
             error: function() {
                 alert('Error updating verification status');
@@ -42,8 +39,31 @@ export function initAdminPanel() {
     
     // Delete form confirmation
     $('.delete-form').on('submit', function(e) {
-        if (!confirm('Are you sure you want to delete this student?')) {
-            e.preventDefault();
+        e.preventDefault();
+        
+        if (confirm('Are you sure you want to delete this student?')) {
+            const form = $(this);
+            const csrfToken = $('meta[name="csrf-token"]').attr('content');
+            
+            $.ajax({
+                url: form.attr('action'),
+                method: 'POST',
+                data: {
+                    _token: csrfToken,
+                    _method: 'DELETE'
+                },
+                success: function() {
+                    showMessage('Student deleted successfully!', 'success');
+                    
+                    // Reload page after short delay
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000);
+                },
+                error: function() {
+                    alert('Error deleting student');
+                }
+            });
         }
     });
 }
