@@ -1,5 +1,5 @@
 // Form validation with jQuery
-$(document).ready(function() {
+export function initFormValidation() {
     const $form = $('#student-form');
     
     if ($form.length) {
@@ -44,7 +44,19 @@ $(document).ready(function() {
             });
         }, 5000);
     }
-});
+
+    // Phone number formatting - only digits (10 digits max)
+    $('#phone').on('input', function() {
+        const value = $(this).val().replace(/\D/g, '');
+        $(this).val(value);
+    });
+
+    // ID Card formatting - only digits (9 digits max)
+    $('#id_card').on('input', function() {
+        const value = $(this).val().replace(/\D/g, '');
+        $(this).val(value);
+    });
+}
 
 /**
  * Validate individual form field
@@ -113,20 +125,4 @@ function getFieldLabel($field) {
     }
     return $field.attr('name').charAt(0).toUpperCase() + $field.attr('name').slice(1);
 }
-
-/**
- * Phone number formatting - only digits (10 digits max)
- */
-$('#phone').on('input', function() {
-    const value = $(this).val().replace(/\D/g, '');
-    $(this).val(value);
-});
-
-/**
- * ID Card formatting - only digits (9 digits max)
- */
-$('#id_card').on('input', function() {
-    const value = $(this).val().replace(/\D/g, '');
-    $(this).val(value);
-});
 

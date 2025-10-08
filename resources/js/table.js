@@ -1,5 +1,5 @@
 // Students table search functionality with jQuery
-$(document).ready(function() {
+export function initTableSearch() {
     const $table = $('.students-table');
     const $searchInput = $('#table-search');
     
@@ -30,5 +30,5 @@ $(document).ready(function() {
             }
         });
     }
-});
+}
 
