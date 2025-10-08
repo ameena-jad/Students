@@ -30,7 +30,6 @@
                             <th>Email</th>
                             <th>Phone</th>
                             <th>ID Card</th>
-                            <th>Registered</th>
                             <th>Verified</th>
                             <th>Actions</th>
                         </tr>
@@ -43,7 +42,6 @@
                                 <td>{{ $student->email }}</td>
                                 <td>{{ $student->phone }}</td>
                                 <td>{{ $student->id_card }}</td>
-                                <td>{{ $student->created_at->format('M d, Y') }}</td>
                                 <td>
                                     <span class="verified-badge {{ $student->verified_at ? 'verified' : 'unverified' }}">
                                         {{ $student->verified_at ? 'Verified' : 'Not Verified' }}

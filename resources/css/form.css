@@ -61,6 +61,7 @@ label {
     display: flex;
     gap: var(--spacing-sm);
     margin-top: var(--spacing-md);
+    align-items: baseline
 }
 
 .button-group .btn {

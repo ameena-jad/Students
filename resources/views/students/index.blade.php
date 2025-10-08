@@ -30,7 +30,6 @@
                             <th>Email</th>
                             <th>Phone</th>
                             <th>ID Card</th>
-                            <th>Registered</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -42,7 +41,6 @@
                                 <td>{{ $student->email }}</td>
                                 <td>{{ $student->phone }}</td>
                                 <td>{{ $student->id_card }}</td>
-                                <td>{{ $student->created_at->format('M d, Y') }}</td>
                                 <td class="actions-cell">
                                     <a href="{{ route('students.edit', $student) }}" class="btn btn-secondary btn-sm">Edit</a>
                                     <form action="{{ route('students.destroy', $student) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this student?');">

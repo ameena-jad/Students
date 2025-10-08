@@ -80,7 +80,10 @@
                 @enderror
             </div>
 
-            <button type="submit" class="btn btn-primary">Register Student</button>
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">Register Student</button>
+                <a href="{{ route('students.index') }}" class="btn btn-secondary">Cancel</a>
+            </div>
         </form>
     </div>
 </div>

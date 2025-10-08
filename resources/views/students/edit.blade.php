@@ -42,7 +42,7 @@
             </div>
 
             <div class="form-group">
-                <label for="phone">Phone Number (10 digits - Unique)</label>
+                <label for="phone">Phone Number (10 digits)</label>
                 <input 
                     type="text" 
                     id="phone" 
@@ -59,7 +59,7 @@
             </div>
 
             <div class="form-group">
-                <label for="id_card">ID Card Number (9 digits - Unique)</label>
+                <label for="id_card">ID Card Number (9 digits)</label>
                 <input 
                     type="text" 
                     id="id_card" 
